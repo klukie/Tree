@@ -1,0 +1,86 @@
+
+
+public class BinaryTree {
+
+	int key;
+	public BinaryTree leftChild;
+	public BinaryTree rightChild;
+
+	BinaryTree(int key) {
+		this.key = key;
+	}
+
+	public void inOrderTraverseTree(BinaryTree focusNode) {
+		if (focusNode != null) {
+			inOrderTraverseTree(focusNode.leftChild);
+			System.out.println(focusNode);
+			inOrderTraverseTree(focusNode.rightChild);
+		}
+	}
+
+	boolean containsTree(BinaryTree t1, BinaryTree t2) {
+        if (t2 == null) return true; // The empty tree is always a subtree
+        else return subTree(t1, t2);
+}
+
+boolean subTree(BinaryTree r1, BinaryTree r2) {
+        if (r1 == null)
+                return false; // big tree empty & subtree still not found.
+        if (r1.key == r2.key) {
+                if (matchTree(r1,r2)) return true;
+        }
+        return (subTree(r1.leftChild, r2) || subTree(r1.rightChild, r2));
+}
+
+boolean matchTree(BinaryTree r1, BinaryTree r2) {
+        if (r2 == null && r1 == null)
+                return true; // nothing left in the subtree
+        if (r1 == null || r2 == null)
+                return false; // big tree empty & subtree still not found
+        if (r1.key != r2.key)
+                return false; // data doesn’t match
+        return (matchTree(r1.leftChild, r2.leftChild) && matchTree(r1.rightChild, r2.rightChild));
+}
+
+
+	public static void main(String[] args) {
+		
+/* 
+        27 
+       /   \ 
+      11      39
+     /    \     \ 
+    6      13     45 
+     \ 
+      8
+*/
+
+		BinaryTree bigTree = new BinaryTree(27);
+		bigTree.rightChild = new BinaryTree(39);
+		bigTree.rightChild.rightChild = new BinaryTree(45);
+		bigTree.leftChild = new BinaryTree(11);
+		bigTree.leftChild.leftChild = new BinaryTree(6);
+		bigTree.leftChild.leftChild.rightChild = new BinaryTree(8);
+		bigTree.leftChild.rightChild = new BinaryTree(13);
+		
+		
+		/*
+        11 
+      /    \ 
+      6     13 
+       \ 
+       8
+*/
+		BinaryTree smallTree = new BinaryTree(11); 
+		smallTree.rightChild = new BinaryTree(13); 
+		smallTree.leftChild = new BinaryTree(6); 
+		smallTree.leftChild.rightChild = new BinaryTree(8);
+		
+		
+		System.out.println(bigTree.containsTree(bigTree, smallTree));
+		
+		
+		
+
+	}
+}
